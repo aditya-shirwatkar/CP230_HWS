@@ -6,3 +6,8 @@ References:
   - M. Mesbahi and M. Egerstedt, Graph Theoretic Methods in Multiagent Networks, Princeton Series in Applied Mathematics, 2010
   - J. C. Latombe, Robot Motion Planning (Vol. 124). Springer Science & Business Media, 2012
   - Artificial Intelligence: A Modern Approach Textbook by Peter Norvig and Stuart J. Russell
+
+## Final Term Paper
+
+
+[M. Missura, D. D. Lee and M. Bennewitz, "Minimal Construct: Efficient Shortest Path Finding for Mobile Robots in Polygonal Maps," 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 7918-7923, doi: 10.1109/IROS.2018.8594124.](https://doi.org/10.1109/IROS.2018.8594124)
