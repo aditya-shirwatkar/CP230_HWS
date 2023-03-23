@@ -30,17 +30,20 @@ function path = minimalConstruct(obstacles, start, goal)
 
     while ~q.isEmpty()
         disp('-----')
-        q.valueList
         [~, v] = q.pop(); % Pop node with lowest cost from priority queue
+
         u = getParent(G, v); % Get parent of v
         p = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
-
+        u
+        v
+        p
+        
         if isempty(p)
             % Perform A* search
             
             % If reached goal, return path
             if v == goal
-                path = [v];
+                path = v;
                 while u ~= start
                     path = [u; path];
                     u = getParent(G, u);
@@ -59,8 +62,8 @@ function path = minimalConstruct(obstacles, start, goal)
                 % Check if neighbor is in closed set
                 if ~ismember(str2num(vi), closedSet, 'rows')
                     % Check if neighbor is in priority queue or cost_so_far(dictionary) is greater than cost of current path
-                    if ~q.isMember(vi) || cost_so_far(vi) > cost_so_far(num2str(v)) + norm(str2num(vi) - v)
-                        % Set parent of neighbor to v
+                    if ~q.contains(vi) || cost_so_far(vi) > cost_so_far(num2str(v)) + norm(str2num(vi) - v)
+                        % Set v as parent of vi
                         G = setParent(G, str2num(vi), v);
 
                         % Add neighbor to cost_so_far
@@ -68,7 +71,6 @@ function path = minimalConstruct(obstacles, start, goal)
                         priority_vi = cost_so_far(vi) + heuristic_cost_estimate(str2num(vi), goal);
                         
                         % Add neighbor to priority queue
-                        vi
                         q.insert(priority_vi, str2num(vi));
                     end
                 end
@@ -97,12 +99,9 @@ function path = minimalConstruct(obstacles, start, goal)
                 end
             end
         end
-        % G.Nodes
-        % G.Edges
     end
     G.Nodes
     G.Edges
-
     hold on
     plot(G);
     hold off
@@ -156,22 +155,32 @@ function parent = getParent(G, Node)
     parent = str2num(G.Nodes.Parent{findnode(G, num2str(Node))});
 end
 
-function p = lineIntersectionTest(obstacles, u, v)
+function poly = lineIntersectionTest(obstacles, u, v)
     %lineIntersectionTest - Description
     %
-    % Syntax: p = lineIntersectionTest(obstacles, u, v)
+    % Syntax: poly = lineIntersectionTest(obstacles, u, v)
     % obstacles is a cell of N polygons, where each polygon is a Mx2 matrix of vertices
     % u is a 1x2 vector of the start point
     % v is a 1x2 vector of the goal point
-    % 
-    % return all polygons that intersect the line segment between u and v
-
-    p = {};
+    
+    % First calculate intersection points using polyxpoly
+    % Then see if the points are inside or on the edges of the polygons using inpolygon
+    % Ignore the boundary ones
+    poly = {};
     for i = 1:length(obstacles)
-        if polyxpoly(obstacles{i}(:,1), obstacles{i}(:,2), [u(1), v(1)], [u(2), v(2)])
-            p{end+1} = obstacles{i};
+        [xi, yi] = polyxpoly(obstacles{i}(:,1), obstacles{i}(:,2), [u(1), v(1)], [u(2), v(2)]);
+        p = [xi, yi];
+        if ~isempty(p)
+            % Get count of points inside polygon
+            [~, boundary] = inpolygon(p(:,1), p(:,2), obstacles{i}(:,1), obstacles{i}(:,2));
+
+            % Add polygon to poly if boundary are more than 1
+            if sum(boundary) > 1
+                poly{end+1} = obstacles{i};
+            end
         end
     end
+    
 end
 
 function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so_far, goal)
@@ -188,18 +197,12 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
     newParent = [];
 
     % for all neighbors of v
-
     if ~isempty(G.neighbors(num2str(v)))
         for vic = G.neighbors(num2str(v)) % NOTE: vi is a cell of string
             vi = vic{1}; % convert to string
-
-            % If vi is not in cost_so_far, add it
-            if ~isKey(cost_so_far, vi)
-                cost_so_far(vi) = norm(str2num(vi) - v);
-            end
     
             % check if neighbor is in closed set
-            if ~ismember(str2num(vi), closedSet, 'rows')
+            if ismember(str2num(vi), closedSet, 'rows')
                 if cost_so_far(vi) + norm(str2num(vi) - v) < minPathCost
                     minPathCost = cost_so_far(vi) + norm(str2num(vi) - v);
                     newParent = str2num(vi);
@@ -214,10 +217,8 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
         G = setParent(G, v, newParent);
         cost_so_far(num2str(v)) = cost_so_far(num2str(newParent)) + norm(v - newParent);
         priority = cost_so_far(num2str(v)) + heuristic_cost_estimate(v, goal);
-        v
-        q.insert(priority, v)
+        q.insert(priority, v);
     end
-
 end
 
 function cost = heuristic_cost_estimate(v, goal)

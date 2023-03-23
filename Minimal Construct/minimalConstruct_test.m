@@ -8,7 +8,7 @@ goal = [10, 10];
 
 % Define the polygonal obstacles as a cell array of vertices
 obs = {
-        [-1, 2; 2, 2; 2, 7; -1, 7], ...
+        % [-1, 2; 2, 2; 2, 7; -1, 7], ...
         [4, 4; 7, 4; 7, 8; 4, 8]
     };
 
