@@ -60,7 +60,7 @@ function path = minimalConstruct(obstacles, start, goal)
                 % Check if neighbor is in closed set
                 if ~ismember(str2num(vi), closedSet, 'rows')
                     % Check if neighbor is in priority queue or cost_so_far(dictionary) is greater than cost of current path
-                    if ~q.contains(vi) || cost_so_far(vi) > cost_so_far(num2str(v)) + norm(str2num(vi) - v)
+                    if ~q.contains(vi) || cost_so_far(vi) >= cost_so_far(num2str(v)) + norm(str2num(vi) - v)
                         % Set v as parent of vi
                         G = setParent(G, str2num(vi), v);
 
@@ -98,8 +98,6 @@ function path = minimalConstruct(obstacles, start, goal)
             end
         end
     end
-    G.Nodes
-    G.Edges
     hold on
     plot(G);
     hold off
@@ -166,8 +164,12 @@ function poly = lineIntersectionTest(obstacles, u, v)
     % Ignore the boundary ones
     poly = {};
     for i = 1:length(obstacles)
-        [xi, yi] = polyxpoly(obstacles{i}(:,1), obstacles{i}(:,2), [u(1), v(1)], [u(2), v(2)]);
-        p = [xi, yi];
+        % NOT WORKING ALL THE TIME
+        % [xi, yi] = polyxpoly([u(1), v(1)], [u(2), v(2)], obstacles{i}(:,1), obstacles{i}(:,2), 'unique');
+        % p = [xi, yi]
+
+        p = polyLineIntersection(obstacles{i}, u, v);
+
         if ~isempty(p)
             % Get count of points inside polygon
             [~, boundary] = inpolygon(p(:,1), p(:,2), obstacles{i}(:,1), obstacles{i}(:,2));
@@ -202,7 +204,7 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
     
             % check if neighbor is in closed set
             if ismember(str2num(vi), closedSet, 'rows')
-                if cost_so_far(vi) + norm(str2num(vi) - v) < minPathCost
+                if cost_so_far(vi) + norm(str2num(vi) - v) <= minPathCost
                     minPathCost = cost_so_far(vi) + norm(str2num(vi) - v);
                     newParent = str2num(vi);
                     % cost_so_far(num2str(newParent)) = cost_so_far(vi) + norm(str2num(vi) - v);
@@ -262,7 +264,6 @@ function [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G, q, closedS
             end
             % Find parent of vi
             [G, q, closedSet, cost_so_far] = findParent(G, vi, q, closedSet, cost_so_far, goal);
-
         end
     end
 end
@@ -306,7 +307,7 @@ end
 function flag = isTangential(polygon, vj, vi)
     %isTangential - Description
     %
-    % Syntax: flag = isTangential(polygon, vi, vj)
+    % Syntax: flag = isTangential(polygon, vj, vi)
     %
     % polygon is a Mx2 matrix of vertices
     % vj is a 1x2 vector of the vertex to check outside
@@ -331,14 +332,37 @@ function flag = isTangential(polygon, vj, vi)
     else
         v2 = polygon(viIndex+1, :);
     end
-
     % Check if both edges (vi-1, vi) and (vi, vi+1) are on the same side of (vi, vj)
     a = vi - vj;
     b = v1 - vj;
     c = v2 - vj;
-    if sign(a(1)*b(2) - a(2)*b(1)) == sign(a(1)*c(2) - a(2)*c(1))
+    if sign(a(1)*b(2) - a(2)*b(1)) == sign(a(1)*c(2) - a(2)*c(1)) || sign(a(1)*b(2) - a(2)*b(1)) == 0 || sign(a(1)*c(2) - a(2)*c(1)) == 0
         flag = true;
     else
         flag = false;
     end
+end
+
+function intersectionPoints = polyLineIntersection(polyVertices, start, goal)
+    % Initialize intersection points
+    intersectionPoints = zeros(0, 2);
+    
+    % Iterate through each line segment of the polygon
+    numVertices = size(polyVertices, 1);
+    for i = 1:numVertices
+        p1 = polyVertices(i, :);
+        if i == numVertices
+            p2 = polyVertices(1, :);
+        else
+            p2 = polyVertices(i+1, :);
+        end
+        
+        % Calculate the intersection point between the line segment and the polygon edge
+        [xi, yi] = polyxpoly([start(1), goal(1)], [start(2), goal(2)], [p1(1), p2(1)], [p1(2), p2(2)]);
+        
+        % If the intersection point is within the polygon and not already in the list, add it
+        if ~isempty(xi) && ~any(all(bsxfun(@eq, intersectionPoints, [xi, yi]), 2)) && inpolygon(xi, yi, polyVertices(:,1), polyVertices(:,2))
+            intersectionPoints(end+1, :) = [xi, yi];
+        end
+    end    
 end
