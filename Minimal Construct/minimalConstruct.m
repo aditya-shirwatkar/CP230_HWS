@@ -29,14 +29,10 @@ function path = minimalConstruct(obstacles, start, goal)
     q.insert(cost_so_far(num2str(start)) + heuristic_cost_estimate(start, goal), goal);
 
     while ~q.isEmpty()
-        disp('-----')
         [~, v] = q.pop(); % Pop node with lowest cost from priority queue
 
         u = getParent(G, v); % Get parent of v
         p = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
-        u
-        v
-        p
         
         if isempty(p)
             % Perform A* search
@@ -49,15 +45,17 @@ function path = minimalConstruct(obstacles, start, goal)
                     u = getParent(G, u);
                 end
                 path = [start; path];
+                disp('--Path Found--')
                 return
             end
 
             % Add v to closed set
             closedSet = [closedSet; v];
 
+            v_neighbors = G.neighbors(num2str(v));
             % For all neighbors of v
-            for vic = G.neighbors(num2str(v)) % NOTE: vi is a cell of string
-                vi = vic{1}; % convert to string
+            for i = 1:length(v_neighbors) % NOTE: vi is a cell of string
+                vi = v_neighbors{i}; % vi is a string
 
                 % Check if neighbor is in closed set
                 if ~ismember(str2num(vi), closedSet, 'rows')
@@ -198,8 +196,9 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
 
     % for all neighbors of v
     if ~isempty(G.neighbors(num2str(v)))
-        for vic = G.neighbors(num2str(v)) % NOTE: vi is a cell of string
-            vi = vic{1}; % convert to string
+        v_neighbors = G.neighbors(num2str(v));
+        for i = 1:length(v_neighbors) % NOTE: vi is a cell of string
+            vi = v_neighbors{i}; % vi is a string
     
             % check if neighbor is in closed set
             if ismember(str2num(vi), closedSet, 'rows')
