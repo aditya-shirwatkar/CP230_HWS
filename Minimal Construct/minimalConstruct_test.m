@@ -21,7 +21,7 @@ obs6 = obs5 + [2,1];
 obs10 = [3,5; 8, 0; 7,5; 6, 10; 5, 6;4, 8; ];
 obs11 = [2,0; 4,0; 4,2; 2,2; ];
 
-set = 4;
+set = 5;
 
 % Define the polygonal obstacles as a cell array of vertices
 obstacles_set1 = {
@@ -60,6 +60,16 @@ obstacles_set4 = {
         [6.5, 9.25; 7.5,9.25; 7.5,10.8; 6.5,10.8;], ...
     };
 
+obstacles_set5 = {
+
+        [8, 8; 12.5,8; 12.5,9; 8,9;],...
+        [1, 0.5; 2, 0.5; 2, 1.5; 1, 1.5;], ...
+        [2.1, 0.5; 2.5, 0.5; 2.5, 5.5; 2.1, 5.5;], ...
+        [3,5; 5,4; 7.5,5; 6, 10; 5, 6;4, 8;], ...
+        [6.5, 9.25; 7.5,9.25; 7.5,10.8; 6.5,10.8;], ...
+        [3, 0.5; 4, 0.5; 4, 3.5; 3, 3.5;], ...
+    };
+
 if (set == 1)
     obs = obstacles_set1;
 elseif (set == 2)
@@ -68,6 +78,8 @@ elseif (set == 3)
     obs = obstacles_set3;
 elseif (set == 4)
     obs = obstacles_set4;
+elseif (set == 5)
+    obs = obstacles_set5;
 end
 
 [path,G] = minimalConstruct(obs, start, goal);
