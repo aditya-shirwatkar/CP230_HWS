@@ -7,12 +7,14 @@ goal = [10, 10];
 
 % Define the polygonal obstacles as a cell array of vertices
 obstacles = {
-                [-1, 2; 2, 2; 2, 7; -1, 7], ...
-                [4, 4; 7, 4; 7, 8; 4, 8]
-            };
+        [3, 1; 4, 1; 4, 2; 3, 2], ...
+        [2,6; 4, 4; 7, 4; 9,6; 7, 8; 4, 8], ...
+        % [1, 1; 1, 2; 2, 2; 2, 1], ...
+        %[6, 6; 7, 6; 7, 9; 6, 9]
+    };
 
 % Find the path using A*
-path = aStar(start, goal, obstacles);
+path = aStarGrid(start, goal, obstacles);
 
 % Plot the results
 figure;

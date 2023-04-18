@@ -53,7 +53,7 @@ end
 function neighbors = generate_neighbors(node, obstacles)
     % Generate neighbors in 8-connected grid
     [x,y] = meshgrid(-0.25:0.25:0.25);
-    deltas = [x(:) y(:)];
+    deltas = 0.25*[x(:) y(:)];
     deltas(5,:) = [];  % remove the (0,0) delta
     neighbors = bsxfun(@plus, node, deltas);
     
