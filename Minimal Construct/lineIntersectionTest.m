@@ -34,18 +34,18 @@ function poly = lineIntersectionTest(obstacles, u, v)
             min_dist_temp = realmax('double');
         end
         
-        if ((min_dist_temp < min_dist) && ~isempty(p) && (~ismember(u, p, 'rows') || ~ismember(v, p, 'rows')))
+        if ((m>1) && (min_dist_temp < min_dist) && ~isempty(p) && (~ismember(u, p, 'rows') || ~ismember(v, p, 'rows')))
             % update min_dist
             min_dist = min_dist_temp;          
-            
+            poly{1} = obstacles{i};
             % Get count of points inside polygon
-            [~, boundary] = inpolygon(p(:,1), p(:,2), obstacles{i}(:,1), obstacles{i}(:,2));
+            %[~, boundary] = inpolygon(p(:,1), p(:,2), obstacles{i}(:,1), obstacles{i}(:,2));
 
             % Add polygon to poly if boundary are more than 1
-            if sum(boundary) > 1
-                %poly{end+1} = obstacles{i};
-                poly{1} = obstacles{i};
-            end
+            %if sum(boundary) > 1
+            %    %poly{end+1} = obstacles{i};
+            %    poly{1} = obstacles{i};
+            %end
         end
     end
     
