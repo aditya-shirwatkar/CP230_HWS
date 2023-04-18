@@ -300,9 +300,11 @@ function flag = isConvex(polygon, vi)
     end
 
     % Check if sign of 2D cross product is positive
-    a = vi - v1;
+    %a = vi - v1;
+    a = v1-vi;
     b = v2 - vi;
-    if a(1)*b(2) - a(2)*b(1) > 0
+    %if a(1)*b(2) - a(2)*b(1) > 0
+    if b(1)*a(2) - b(2)*a(1) > 0
         flag = true;
     else
         flag = false;

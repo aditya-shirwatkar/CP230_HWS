@@ -17,8 +17,14 @@ function poly = lineIntersectionTest(obstacles, u, v)
         [xi, yi] = polyxpoly(obstacle_closed_x, obstacle_closed_y, [u(1), v(1)], [u(2), v(2)]);
         %[xi, yi] = polyxpoly(obstacles{i}(:,1), obstacles{i}(:,2), [u(1), v(1)], [u(2), v(2)]);
         p = [xi, yi];
+
+        % only unique points in p
+        p = unique(p, 'rows');
         
-        if (~isempty(p))
+        % size of p
+        [m, ~] = size(p);
+
+        if ((m > 1) && ~isempty(p)) % && ~ismember(u, p, 'rows'))
             % distance of each point in p to the initial point u
             p_dist_from_u = sqrt(sum((p - u).^2, 2));
 
