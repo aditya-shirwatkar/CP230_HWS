@@ -33,6 +33,10 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
         [~, v] = q.pop(); % Pop node with lowest cost from priority queue
 
         u = getParent(G, v); % Get parent of v
+        if(isempty(u))
+            disp("ERROR: Parent is empty!!")
+            disp(v)
+        end
         p = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
 
         if isempty(p)
