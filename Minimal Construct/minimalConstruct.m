@@ -1,4 +1,4 @@
-function [path,G] = minimalConstruct(obstacles, start, goal)
+function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
     %myFun - Description
     %
     % Syntax: path = minimalConstruct(obstacles, start, goal)
@@ -31,11 +31,10 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
 
     while ~q.isEmpty()
         [~, v] = q.pop(); % Pop node with lowest cost from priority queue
-
+        
         u = getParent(G, v); % Get parent of v
-        if(isempty(u))
-            disp("ERROR: Parent is empty!!")
-            disp(v)
+        if isempty(u) || isempty(v)
+            disp('Bug')
         end
         p = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
 
@@ -45,16 +44,14 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
             % If reached goal, return path
             if v == goal
                 path = v;
-                G.Nodes
-                G.Edges
                 while ~isequal(path(1,:), start)
                     path = [u; path];
                     u = getParent(G, u);
                 end
                 path = [start; path];
-                hold on
-                plot(G);
-                hold off
+                % hold on
+                % plot(G);
+                % hold off
                 return
             end
 
@@ -72,6 +69,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
                     % Check if neighbor is in priority queue or cost_so_far(dictionary) is greater than cost of current path
                     if ~q.contains(str2num(vi)) || (cost_so_far(vi) > cost_so_far(num2str(v)) + norm(str2num(vi) - v))
                         % Set v as parent of vi
+                        if str2num(vi) == [10,3]
+                            disp('Bug')
+                        end
                         G = setParent(G, str2num(vi), v);
 
                         % Add neighbor to cost_so_far
@@ -87,6 +87,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
             % v is no longer a neighbor of u
             G = removeNeighbor(G, num2str(u), num2str(v));
     
+            if v == [10,3]
+                disp('Bug')
+            end
             % Remove parent of v
             G = removeParent(G, v);
 
@@ -101,7 +104,7 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
                 % Check if polygon pi is in closed set
                 if any(~ismember(p_i, closedPoly, 'rows'))
                     % Connect Obstacle
-                    [G, q, closedSet, cost_so_far] = connectObstacle(p_i, G, q, closedSet, cost_so_far, goal);
+                    [G, q, closedSet, cost_so_far] = connectObstacle(p_i, G, q, closedSet, cost_so_far, goal, boundary_obs);
                             
                     % Add polygon p_i to closed set
                     closedPoly = [closedPoly; p_i];                    
@@ -109,11 +112,6 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
             %end
         end
     end
-    G.Nodes
-    G.Edges
-    hold on
-    plot(G);
-    hold off
 
     path = [];
     disp('Search Failed! No Path Found!')
@@ -221,8 +219,13 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
         end
     end
 
+    % Set parent of v to newParent
+    if v == [10, 3]
+        disp('Bug')
+    end
+
+
     if ~isempty(newParent)
-        % Set parent of v to newParent
         G = setParent(G, v, newParent);
         cost_so_far(num2str(v)) = cost_so_far(num2str(newParent)) + norm(v - newParent);
         priority = cost_so_far(num2str(v)) + heuristic_cost_estimate(v, goal);
@@ -241,7 +244,7 @@ function cost = heuristic_cost_estimate(v, goal)
     cost = norm(v - goal);
 end
 
-function [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G, q, closedSet, cost_so_far, goal)
+function [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G, q, closedSet, cost_so_far, goal, boundary_obs)
     %connectObstacle - Description
     %
     % Syntax: [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G)
@@ -264,7 +267,8 @@ function [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G, q, closedS
 
                 if ~isequal(vi, vj)
                     % Check if vj is tangential to vi
-                    if isTangential(polygon, vj, vi)
+                    [in,on] = inpolygon(vi(1), vi(2), boundary_obs{1}(:,1), boundary_obs{1}(:,2));
+                    if isTangential(polygon, vj, vi) %&& ~isequal(vi(in),vi(on)) 
                         % add vi as a neighbor of vj
                         G = addNeighbor(G, vj, vi);
                     end

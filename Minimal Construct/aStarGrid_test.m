@@ -14,7 +14,7 @@ obstacles = {
     };
 
 % Find the path using A*
-path = aStarGrid(start, goal, obstacles);
+path = aStarGrid(start, goal, obstacles, {});
 
 % Plot the results
 figure;
