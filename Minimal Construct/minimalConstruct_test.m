@@ -49,7 +49,7 @@ obs28 = obs1 + [6,8];
 obs29 = obs1 + [8,8];
 obs30 = obs1 + [10,8];
 
-set = 8;
+set = 6;
 
 % Define the polygonal obstacles as a cell array of vertices
 obstacles_set1 = {
@@ -176,7 +176,11 @@ elseif (set == 8)
     obs = obstacles_set8;
 end
 
-[path,G] = minimalConstruct(obs, start, goal);
+[path_min_const,G] = minimalConstruct(obs, start, goal);
+
+% Find the path_min_const using A*
+path_a_star = aStarGrid(start, goal, obs);
+
 
 num_edges = size(G.Edges);
 
@@ -185,9 +189,9 @@ num_edges = size(G.Edges);
 figure;
 hold on;
 for i=1:num_edges(1)
-    x_y_1 = str2num(G.Edges{i,1}{1});
-    x_y_2 = str2num(G.Edges{i,1}{2});
-    plot([x_y_1(1) x_y_2(1)],[x_y_1(2) x_y_2(2)],'-o');
+     x_y_1 = str2num(G.Edges{i,1}{1});
+     x_y_2 = str2num(G.Edges{i,1}{2});
+     plot([x_y_1(1) x_y_2(1)],[x_y_1(2) x_y_2(2)],'-o','Color', [1,0,1,0.2]);
 end
 plot(start(1), start(2), 'r*')
 plot(goal(1), goal(2), 'g*')
@@ -197,8 +201,11 @@ for i = 1:numel(obs)
     patch(obs{i}(:,1), obs{i}(:,2), 'k');
 end
 
-if ~isempty(path)
-    plot(path(:,1), path(:,2), 'r', 'LineWidth', 2);
+if ~isempty(path_min_const)
+    % plot the path_min_const
+    plot(path_min_const(:,1), path_min_const(:,2), 'r', 'LineWidth', 2);
+    % plot the path_a_star
+    plot(path_a_star(:,1), path_a_star(:,2), 'g', 'LineWidth', 2);
 end
 xlim([-1, 11]);
 ylim([-1, 11]);

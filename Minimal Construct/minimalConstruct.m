@@ -52,9 +52,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal)
                     u = getParent(G, u);
                 end
                 path = [start; path];
-                hold on
-                plot(G);
-                hold off
+%                 hold on
+%                 plot(G);
+%                 hold off
                 return
             end
 
