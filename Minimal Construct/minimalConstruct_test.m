@@ -4,7 +4,7 @@ warning('off')
 
 % Define the start and goal positions
 start = [0, 10];
-goal = [11, 1];
+goal = [11.5, 1];
 
 
 obs1 = [2.5,3;5.5,1;6,1.5;3,3.5] + [6,0];
