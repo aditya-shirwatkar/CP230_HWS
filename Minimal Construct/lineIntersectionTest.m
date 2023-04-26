@@ -12,6 +12,9 @@ function poly = lineIntersectionTest(obstacles, u, v)
     poly = {};
     min_dist = realmax('double');
     for i = 1:length(obstacles)
+        if isempty(u) || isempty(v)
+            disp('Bug')
+        end
         obstacle_closed_x = [obstacles{i}(:,1); obstacles{i}(1,1)];
         obstacle_closed_y = [obstacles{i}(:,2); obstacles{i}(1,2)];
         [xi, yi] = polyxpoly(obstacle_closed_x, obstacle_closed_y, [u(1), v(1)], [u(2), v(2)]);
@@ -20,11 +23,17 @@ function poly = lineIntersectionTest(obstacles, u, v)
 
         % only unique points in p
         p = unique(p, 'rows');
-        
+
+        all_p_in_obs_vertex = all(ismember(p, obstacles{i}, 'rows'));
+        is_on_same_side = all(are_points_on_same_side_of_line(obstacles{i}, u, v));
+
+        polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && is_on_same_side));
+
         % size of p
         [m, ~] = size(p);
 
-        if ((m > 1) && ~isempty(p)) % && ~ismember(u, p, 'rows'))
+        % if ((m > 1) && ~isempty(p)) % && ~ismember(u, p, 'rows'))
+        if(polygon_intersecting)
             % distance of each point in p to the initial point u
             p_dist_from_u = sqrt(sum((p - u).^2, 2));
 
@@ -34,9 +43,10 @@ function poly = lineIntersectionTest(obstacles, u, v)
             min_dist_temp = realmax('double');
         end
         
-        if ((m>1) && (min_dist_temp < min_dist) && ~isempty(p) && (~ismember(u, p, 'rows') || ~ismember(v, p, 'rows')))
+        % if ((m>1) && (min_dist_temp < min_dist) && ~isempty(p)) && ~checkAdjacent(obstacles{i}, u, v) % and check if u and v are not adjacent nodes in polygon && (~ismember(u, p, 'rows') || ~ismember(v, p, 'rows')))
+        if(polygon_intersecting)
             % update min_dist
-            min_dist = min_dist_temp;          
+            min_dist = min_dist_temp;
             poly{1} = obstacles{i};
             % Get count of points inside polygon
             %[~, boundary] = inpolygon(p(:,1), p(:,2), obstacles{i}(:,1), obstacles{i}(:,2));
