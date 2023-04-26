@@ -2,7 +2,7 @@ clear
 clc
 % Define planner to use
 planner = 1; % minimalConstruct
-% planner = 2; % aStarGrid
+%planner = 2; % aStarGrid
 % planner = 3; % visibilityGraph
 
 
@@ -13,7 +13,7 @@ goal = [13, 8];
 boundary_obs = { [0,0; 16,0; 16,12; 0,12] };
 
 door_obs = {
-    [2,0; 2.1,0; 2.1,2; 2,2], ...
+    [2,-0.1; 2.1,-0.1; 2.1,2; 2,2], ...
     [4,6; 4.1,6; 4.1,7.5; 4,7.5], ...
     [4,10; 4.1,10; 4.1,12; 4,12], ...
     [6,6; 6.1,6; 6.1,7; 6,7], ...
@@ -28,12 +28,15 @@ obs = {
     [14,0; 15,0; 15,4; 14,4], ...
 };
 
+tic
 if planner == 1
     [path,G] = minimalConstruct(obs, start, goal, boundary_obs);
 elseif planner == 2
     path = aStarGrid(start, goal, obs, boundary_obs);    
 end
 
+elapsed_time = toc;
+disp(['Elapsed time: ' num2str(elapsed_time) ' seconds.']);
 
 robotInitialLocation = path(1,:);
 robotGoal = path(end,:);
@@ -67,7 +70,7 @@ new_obs_prev = obs;
 
 while( distanceToGoal > goalRadius )
     time = time + 1;
-    if time <= 100 
+    if time <= 50 
     %     % Update the polygonal map
         new_obs = updateMap(obs, boundary_obs, door_obs);
     else
@@ -80,7 +83,7 @@ while( distanceToGoal > goalRadius )
         for i = 1:numel(new_obs)
             [xi, yi] = polyxpoly(path(:,1), path(:,2), new_obs{i}(:,1), new_obs{i}(:,2));
             p = [xi, yi];
-            if (~isempty(p) && size(p, 1) > 1) % || ~isequal(new_obs, new_obs_prev)
+            if (~isempty(p) && size(p, 1) > 1)  || ~isequal(new_obs, new_obs_prev)
                 if (~isempty(p) && size(p, 1) > 1)
                     disp("Path intersects with obstacle")
                 else
@@ -94,6 +97,7 @@ while( distanceToGoal > goalRadius )
                 if planner == 1
                     [path,G] = minimalConstruct(new_obs, round(start, 2), goal, boundary_obs);
                 elseif planner == 2
+        
                     path = aStarGrid(round(start, 2), goal, new_obs, boundary_obs);
                 end
                 controller.Waypoints = path;
