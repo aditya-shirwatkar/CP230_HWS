@@ -49,7 +49,7 @@ obs28 = obs1 + [6,8];
 obs29 = obs1 + [8,8];
 obs30 = obs1 + [10,8];
 
-set = 4;
+set = 8;
 
 % Define the polygonal obstacles as a cell array of vertices
 obstacles_set1 = {
