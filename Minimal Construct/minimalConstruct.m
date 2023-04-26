@@ -268,7 +268,7 @@ function [G, q, closedSet, cost_so_far] = connectObstacle(polygon, G, q, closedS
                 if ~isequal(vi, vj)
                     % Check if vj is tangential to vi
                     [in,on] = inpolygon(vi(1), vi(2), boundary_obs{1}(:,1), boundary_obs{1}(:,2));
-                    if isTangential(polygon, vj, vi) %&& ~isequal(vi(in),vi(on)) 
+                    if isTangential(polygon, vj, vi) && ~isequal(vi(in),vi(on)) 
                         % add vi as a neighbor of vj
                         G = addNeighbor(G, vj, vi);
                     end

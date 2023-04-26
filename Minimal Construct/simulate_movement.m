@@ -48,7 +48,7 @@ robot = differentialDriveKinematics("TrackWidth", 0.5, "VehicleInputs", "Vehicle
 
 controller = controllerPurePursuit;
 controller.Waypoints = path;
-controller.DesiredLinearVelocity = 1.6;
+controller.DesiredLinearVelocity = 0.2;
 controller.MaxAngularVelocity = 2;
 controller.LookaheadDistance = 0.3;
 
