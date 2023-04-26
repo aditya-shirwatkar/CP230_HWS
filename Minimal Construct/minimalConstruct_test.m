@@ -4,7 +4,7 @@ warning('off')
 
 % Define the start and goal positions
 start = [0, 10];
-goal = [11.1, 1];
+goal = [11, 1];
 
 
 obs1 = [2.5,3;5.5,1;6,1.5;3,3.5] + [6,0];
@@ -16,7 +16,7 @@ obs6 = obs5 + [2,1];
 obs10 = [3,5; 8, 0; 7,5; 6, 10; 5, 6;4, 8; ];
 obs11 = [2,0; 4,0; 4,2; 2,2; ];
 
-set = 7;
+set = 1;
 
 % Define the polygonal obstacles as a cell array of vertices
 obstacles_set1 = {
