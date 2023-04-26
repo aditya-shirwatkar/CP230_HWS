@@ -28,7 +28,7 @@ function poly = lineIntersectionTest(obstacles, u, v)
         is_on_same_side = all(are_points_on_same_side_of_line(obstacles{i}, u, v));
 
         polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && is_on_same_side));
-
+       
         % size of p
         [m, ~] = size(p);
 
@@ -44,7 +44,7 @@ function poly = lineIntersectionTest(obstacles, u, v)
         end
         
         % if ((m>1) && (min_dist_temp < min_dist) && ~isempty(p)) && ~checkAdjacent(obstacles{i}, u, v) % and check if u and v are not adjacent nodes in polygon && (~ismember(u, p, 'rows') || ~ismember(v, p, 'rows')))
-        if(polygon_intersecting)
+        if(polygon_intersecting && (min_dist_temp < min_dist))
             % update min_dist
             min_dist = min_dist_temp;
             poly{1} = obstacles{i};
