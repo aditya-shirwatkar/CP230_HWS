@@ -1,8 +1,8 @@
 clear
 clc
 % Define planner to use
-planner = 1; % minimalConstruct
-%planner = 2; % aStarGrid
+%planner = 1; % minimalConstruct
+planner = 2; % aStarGrid
 % planner = 3; % visibilityGraph
 
 
@@ -72,11 +72,11 @@ while( distanceToGoal > goalRadius )
     time = time + 1;
     if time <= 100 
     %     % Update the polygonal map
-        new_obs = updateMap(obs, boundary_obs, door_obs);
+        new_obs = updateMap(obs, door_obs);
     else
         new_obs = obs;
     end
-    % new_obs = updateMap(obs, boundary_obs, door_obs);
+    % new_obs = updateMap(obs, door_obs);
 
     % Check if current path intersects with obstacles using polxpoly
     if ~isempty(path)
@@ -84,14 +84,15 @@ while( distanceToGoal > goalRadius )
             [xi, yi] = polyxpoly(path(:,1), path(:,2), new_obs{i}(:,1), new_obs{i}(:,2));
             p = [xi, yi];
             num_pts_path = size(path);
-            all_p_in_obs_vertex = all(ismember(p, new_obs{i}, 'rows'));
+            % all_p_in_obs_vertex = all(ismember(p, new_obs{i}, 'rows'));
             for j = 1:(num_pts_path-1)
                 u = path(j,:);
                 v = path(j+1,:);
-                is_on_same_side(j) = all(are_points_on_same_side_of_line(new_obs{i}, u, v));
-                polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && all(is_on_same_side)));
+                [poly, polygon_intersecting_arr] = lineIntersectionTest(new_obs, u, v)
+                % is_on_same_side(j) = all(are_points_on_same_side_of_line(new_obs{i}, u, v));
+                % polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && ~all(is_on_same_side)));
             end
-
+            polygon_intersecting = polygon_intersecting_arr(i);
             %if (~isempty(p) && size(p, 1) > 1)  || ~isequal(new_obs, new_obs_prev)
             if(polygon_intersecting || ~isequal(new_obs, new_obs_prev))
                 %if (~isempty(p) && size(p, 1) > 1)
@@ -104,7 +105,7 @@ while( distanceToGoal > goalRadius )
                 disp(p)
                 disp("Recalculating path at time: " + num2str(time))
                 start = [robotCurrentPose(1), robotCurrentPose(2)];
-
+                
                 if planner == 1
                     [path,G] = minimalConstruct(new_obs, round(start, 2), goal, boundary_obs);
                 elseif planner == 2

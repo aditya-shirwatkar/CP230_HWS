@@ -36,7 +36,10 @@ function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
         if isempty(u) || isempty(v)
             disp('Bug')
         end
-        p = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
+        %if(v == [12 7])
+        %     print('bug')
+        %end
+        [p,~] = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
 
         if isempty(p)
             % Perform A* search
@@ -69,9 +72,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
                     % Check if neighbor is in priority queue or cost_so_far(dictionary) is greater than cost of current path
                     if ~q.contains(str2num(vi)) || (cost_so_far(vi) > cost_so_far(num2str(v)) + norm(str2num(vi) - v))
                         % Set v as parent of vi
-                        if str2num(vi) == [10,3]
-                            disp('Bug')
-                        end
+                        % if str2num(vi) == [10,3]
+                        %     disp('Bug')
+                        % end
                         G = setParent(G, str2num(vi), v);
 
                         % Add neighbor to cost_so_far
@@ -87,9 +90,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
             % v is no longer a neighbor of u
             G = removeNeighbor(G, num2str(u), num2str(v));
     
-            if v == [10,3]
-                disp('Bug')
-            end
+            % if v == [10,3]
+            %     disp('Bug')
+            % end
             % Remove parent of v
             G = removeParent(G, v);
 
@@ -100,6 +103,7 @@ function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
             % check if the vertices of interecting polygons are in closed set
             %for i = 1:length(p)
                 p_i = p{1};
+                %p_i = p;
 
                 % Check if polygon pi is in closed set
                 if any(~ismember(p_i, closedPoly, 'rows'))
@@ -220,9 +224,9 @@ function [G, q, closedSet, cost_so_far] = findParent(G, v, q, closedSet, cost_so
     end
 
     % Set parent of v to newParent
-    if v == [10, 3]
-        disp('Bug')
-    end
+    % if v == [10, 3]
+    %     disp('Bug')
+    % end
 
 
     if ~isempty(newParent)
