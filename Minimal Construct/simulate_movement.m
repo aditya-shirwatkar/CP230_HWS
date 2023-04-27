@@ -48,8 +48,8 @@ robot = differentialDriveKinematics("TrackWidth", 0.5, "VehicleInputs", "Vehicle
 
 controller = controllerPurePursuit;
 controller.Waypoints = path;
-controller.DesiredLinearVelocity = 0.2;
-controller.MaxAngularVelocity = 2;
+controller.DesiredLinearVelocity = 0.7;
+controller.MaxAngularVelocity = 10;
 controller.LookaheadDistance = 0.3;
 
 goalRadius = 0.5;
@@ -70,7 +70,7 @@ new_obs_prev = obs;
 
 while( distanceToGoal > goalRadius )
     time = time + 1;
-    if time <= 50 
+    if time <= 100 
     %     % Update the polygonal map
         new_obs = updateMap(obs, boundary_obs, door_obs);
     else
@@ -83,8 +83,19 @@ while( distanceToGoal > goalRadius )
         for i = 1:numel(new_obs)
             [xi, yi] = polyxpoly(path(:,1), path(:,2), new_obs{i}(:,1), new_obs{i}(:,2));
             p = [xi, yi];
-            if (~isempty(p) && size(p, 1) > 1)  || ~isequal(new_obs, new_obs_prev)
-                if (~isempty(p) && size(p, 1) > 1)
+            num_pts_path = size(path);
+            all_p_in_obs_vertex = all(ismember(p, new_obs{i}, 'rows'));
+            for j = 1:(num_pts_path-1)
+                u = path(j,:);
+                v = path(j+1,:);
+                is_on_same_side(j) = all(are_points_on_same_side_of_line(new_obs{i}, u, v));
+                polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && all(is_on_same_side)));
+            end
+
+            %if (~isempty(p) && size(p, 1) > 1)  || ~isequal(new_obs, new_obs_prev)
+            if(polygon_intersecting || ~isequal(new_obs, new_obs_prev))
+                %if (~isempty(p) && size(p, 1) > 1)
+                if(polygon_intersecting)
                     disp("Path intersects with obstacle")
                 else
                     disp("Map changed")

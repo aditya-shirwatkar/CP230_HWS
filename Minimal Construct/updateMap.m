@@ -10,7 +10,7 @@ function new_obs = updateMap(obs, boundary_obs, door_obs)
     new_obs = obs;
 
     % For door 1
-    % if rand(1) < eps    
+    % if rand(1) < eps
         poly1 = polyshape(obs{1}(:,1), obs{1}(:,2));
         poly2 = polyshape(door_obs{1}(:,1), door_obs{1}(:,2));
         polyout = union(poly1,poly2);
