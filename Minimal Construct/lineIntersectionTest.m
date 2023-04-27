@@ -28,12 +28,14 @@ function [poly, polygon_intersecting] = lineIntersectionTest(obstacles, u, v)
         if m > 1
             % define a variable mid_pt_of_p_is_inside with length of p-1
             inside = zeros(length(p)-1, 1);
+            boundary = zeros(length(p)-1, 1);
             
             % run a loop for each point in p
             for j = 1:length(p)-1
                 % write the mid point of the jth and the j+1 th point in p
                 mid_point = (p(j,:) + p(j+1,:))/2;
-                [inside(j), ~] = inpolygon(mid_point(1), mid_point(2), obstacles{i}(:,1), obstacles{i}(:,2));
+                [inside(j), boundary(j)] = inpolygon(mid_point(1), mid_point(2), obstacles{i}(:,1), obstacles{i}(:,2));
+                inside(j) = inside(j) && ~boundary(j);
             end 
 
             % do bitwiseor of inside

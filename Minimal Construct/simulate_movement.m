@@ -1,8 +1,8 @@
 clear
 clc
 % Define planner to use
-%planner = 1; % minimalConstruct
-planner = 2; % aStarGrid
+planner = 1; % minimalConstruct
+%planner = 2; % aStarGrid
 % planner = 3; % visibilityGraph
 
 
@@ -88,7 +88,7 @@ while( distanceToGoal > goalRadius )
             for j = 1:(num_pts_path-1)
                 u = path(j,:);
                 v = path(j+1,:);
-                [poly, polygon_intersecting_arr] = lineIntersectionTest(new_obs, u, v)
+                [poly, polygon_intersecting_arr] = lineIntersectionTest(new_obs, u, v);
                 % is_on_same_side(j) = all(are_points_on_same_side_of_line(new_obs{i}, u, v));
                 % polygon_intersecting = ~isempty(p) && (~all_p_in_obs_vertex || (all_p_in_obs_vertex && ~all(is_on_same_side)));
             end

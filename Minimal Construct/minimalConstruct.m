@@ -36,9 +36,9 @@ function [path,G] = minimalConstruct(obstacles, start, goal, boundary_obs)
         if isempty(u) || isempty(v)
             disp('Bug')
         end
-        %if(v == [12 7])
-        %     print('bug')
-        %end
+        % if(v == [12 3])
+        %      print('bug')
+        % end
         [p,~] = lineIntersectionTest(obstacles, u, v); % Check if line segment between u and v intersects any obstacles
 
         if isempty(p)
