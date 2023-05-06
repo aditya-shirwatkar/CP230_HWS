@@ -15,11 +15,16 @@ References:
 
 **Results:**
 
-|                       Grid based A*                             |                         Minimal Construct                       |
+|  Global Planner   | Case 1 | Case 2 | Case 3 | Case 4 |
+| :---------------: | :----: | :----: | :----: | :----: |
+|   Grid based A*   | <img src="./Minimal%20Construct/results/image19.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image22.gif" width=250> | <img src="./Minimal%20Construct/results/image24.gif" width=250> |
+| Minimal Construct | <img src="./Minimal%20Construct/results/image20.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image23.gif" width=250> | <img src="./Minimal%20Construct/results/image25.gif" width=250> |
+
+<!-- |                       Grid based A*                             |                         Minimal Construct                       |
 | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| <img src="./Minimal%20Construct/results/image19.gif" width=300> | <img src="./Minimal%20Construct/results/image20.gif" width=300> |
-| <img src="./Minimal%20Construct/results/image21.gif" width=300> | <img src="./Minimal%20Construct/results/image21.gif" width=300> |
-| <img src="./Minimal%20Construct/results/image22.gif" width=300> | <img src="./Minimal%20Construct/results/image23.gif" width=300> |
-| <img src="./Minimal%20Construct/results/image24.gif" width=300> | <img src="./Minimal%20Construct/results/image25.gif" width=300> |
+| <img src="./Minimal%20Construct/results/image19.gif" width=250> | <img src="./Minimal%20Construct/results/image20.gif" width=250> |
+| <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> |
+| <img src="./Minimal%20Construct/results/image22.gif" width=250> | <img src="./Minimal%20Construct/results/image23.gif" width=250> |
+| <img src="./Minimal%20Construct/results/image24.gif" width=250> | <img src="./Minimal%20Construct/results/image25.gif" width=250> | -->
 
 > Reference: [M. Missura, D. D. Lee and M. Bennewitz, "Minimal Construct: Efficient Shortest Path Finding for Mobile Robots in Polygonal Maps," 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 7918-7923, doi: 10.1109/IROS.2018.8594124.](https://doi.org/10.1109/IROS.2018.8594124)
