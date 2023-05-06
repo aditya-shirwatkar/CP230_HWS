@@ -13,4 +13,13 @@ References:
 
 **Abstract:** Autonomous agents face the challenge of coordinating multiple tasks (perception, motion planning, controller) which are computationally expensive on a single onboard computer. To utilize the onboard processing capacity optimally, it is imperative to arrive at computationally efficient algorithms for global path planning. In this work, it is attempted to reduce the processing time for global path planning in dynamically evolving polygonal maps. In dynamic environments, maps may not remain valid for long. Hence it is of utmost importance to obtain the shortest path quickly in an ever-changing environment. To address this, an existing rapid path-finding algorithm, the Minimal Construct was used. This algorithm discovers only a necessary portion of the Visibility Graph around obstacles and computes collision tests only for lines that seem heuristically promising. Simulations show that this algorithm finds shortest paths faster than traditional grid-based A* searches in most cases, resulting in smoother and shorter paths even in dynamic environments.
 
+**Results:**
+
+|                       Grid based A*                             |                         Minimal Construct                       |
+| --------------------------------------------------------------- | --------------------------------------------------------------- |
+| <img src="./Minimal%20Construct/results/image19.gif" width=300> | <img src="./Minimal%20Construct/results/image20.gif" width=300> |
+| <img src="./Minimal%20Construct/results/image21.gif" width=300> | <img src="./Minimal%20Construct/results/image21.gif" width=300> |
+| <img src="./Minimal%20Construct/results/image22.gif" width=300> | <img src="./Minimal%20Construct/results/image23.gif" width=300> |
+| <img src="./Minimal%20Construct/results/image24.gif" width=300> | <img src="./Minimal%20Construct/results/image25.gif" width=300> |
+
 > Reference: [M. Missura, D. D. Lee and M. Bennewitz, "Minimal Construct: Efficient Shortest Path Finding for Mobile Robots in Polygonal Maps," 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 7918-7923, doi: 10.1109/IROS.2018.8594124.](https://doi.org/10.1109/IROS.2018.8594124)
