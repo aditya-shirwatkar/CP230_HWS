@@ -1,4 +1,4 @@
-function path = aStarGrid(start, goal, obstacles)
+function path = aStarGrid(start, goal, obstacles, boundary_obs)
     % start and goal are 2-element row vectors
     % obstacles is a cell array of polygons, where each polygon is an N-by-2 matrix of vertex coordinates
     
@@ -20,13 +20,13 @@ function path = aStarGrid(start, goal, obstacles)
         [~, current] = open_set.pop();
         
         % Check if we've reached the goal
-        if isequal(current, goal)
-            path = reconstruct_path(came_from, start, goal);
+        if norm(current - goal) < 0.5
+            path = reconstruct_path(came_from, start, current);
             return
         end
         
         % Generate neighboring nodes
-        neighbors = generate_neighbors(current, obstacles);
+        neighbors = generate_neighbors(current, obstacles, boundary_obs);
     
         for i = 1:size(neighbors,1)
             neighbor = neighbors(i,:);
@@ -50,7 +50,7 @@ function d = distance(node1, node2)
     d = norm(node1 - node2);
 end
 
-function neighbors = generate_neighbors(node, obstacles)
+function neighbors = generate_neighbors(node, obstacles, boundary_obs)
     % Generate neighbors in 8-connected grid
     [x,y] = meshgrid(-0.25:0.25:0.25);
     deltas = [x(:) y(:)];
@@ -61,7 +61,17 @@ function neighbors = generate_neighbors(node, obstacles)
     for i = 1:numel(obstacles)
         obstacle = obstacles{i};
         mask = inpolygon(neighbors(:,1), neighbors(:,2), obstacle(:,1), obstacle(:,2));
-        neighbors(mask,:) = [];
+
+        if isempty(boundary_obs)
+            neighbors(mask,:) = [];
+        else
+            for j = 1:numel(boundary_obs)
+                boundary_ob = boundary_obs{j};
+                mask2 = ~inpolygon(neighbors(:,1), neighbors(:,2), boundary_ob(:,1), boundary_ob(:,2));
+                mask = mask | mask2;
+            end
+            neighbors(mask,:) = [];
+        end
     end
 end
 
