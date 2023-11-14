@@ -1,6 +1,6 @@
 # CP230_HWS
 
-**Course Description:** Grid search based planning (DFS, BFS, Dijkstra, A* algorithm), Criteria for comparing algorithms- Time and space complexity, Completeness and Optimality; Forward and inverse kinematics, obstacle representations; planning complexity, Various heuristics for A* algorithm; Markov Decision Process, Value and Policy Iteration Algorithms, Sampling-based planning (RRT & RRT algorithms); Path planning using RRT; Implementation of continuous space sampling: Real world examples using A* and RRT* Motion planning in discrete space; Logic-based planning methods; Geometric representations; Kinematic chains and rigid and non-rigid transformations; Configuration space; Topological space concepts; Representation of obstacles; Collision detection and avoidance in relative velocity space; Collision cones and velocity obstacles; Artificial potential fields; Flocking and swarming, Formation control
+**Course Description:** Grid search-based planning (DFS, BFS, Dijkstra, A* algorithm), Criteria for comparing algorithms- Time and space complexity, Completeness and Optimality; Forward and inverse kinematics, obstacle representations; planning complexity, Various heuristics for A* algorithm; Markov Decision Process, Value and Policy Iteration Algorithms, Sampling-based planning (RRT & RRT algorithms); Path planning using RRT; Implementation of continuous space sampling: Real world examples using A* and RRT* Motion planning in discrete space; Logic-based planning methods; Geometric representations; Kinematic chains and rigid and non-rigid transformations; Configuration space; Topological space concepts; Representation of obstacles; Collision detection and avoidance in relative velocity space; Collision cones and velocity obstacles; Artificial potential fields; Flocking and swarming, Formation control
 
 References:
   - S.M. LaValle, Planning Algorithms, Cambridge University Press, 2006
@@ -30,8 +30,8 @@ Blue: Grid based A* & Red: Minimal Construct
 
 |  Global Planner   | Case 1 | Case 2 | Case 3 | Case 4 |
 | :---------------: | :----: | :----: | :----: | :----: |
-|   Grid based A*   | <img src="./Minimal%20Construct/results/image19.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image22.gif" width=250> | <img src="./Minimal%20Construct/results/image24.gif" width=250> |
-| Minimal Construct | <img src="./Minimal%20Construct/results/image20.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image23.gif" width=250> | <img src="./Minimal%20Construct/results/image25.gif" width=250> |
+|   Grid based A*   | <img src="./Minimal%20Construct/results/image19.gif" width=250> | <img src="./Minimal%20Construct/results/image21.gif" width=250> | <img src="./Minimal%20Construct/results/image23.gif" width=250> | <img src="./Minimal%20Construct/results/image26.gif" width=250> |
+| Minimal Construct | <img src="./Minimal%20Construct/results/image20.gif" width=250> | <img src="./Minimal%20Construct/results/image22.gif" width=250> | <img src="./Minimal%20Construct/results/image24.gif" width=250> | <img src="./Minimal%20Construct/results/image25.gif" width=250> |
 
 <!-- |                       Grid based A*                             |                         Minimal Construct                       |
 | --------------------------------------------------------------- | --------------------------------------------------------------- |
