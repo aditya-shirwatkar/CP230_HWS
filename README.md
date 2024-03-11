@@ -41,3 +41,17 @@ Blue: Grid based A* & Red: Minimal Construct
 | <img src="./Minimal%20Construct/results/image24.gif" width=250> | <img src="./Minimal%20Construct/results/image25.gif" width=250> | -->
 
 > Reference: [M. Missura, D. D. Lee and M. Bennewitz, "Minimal Construct: Efficient Shortest Path Finding for Mobile Robots in Polygonal Maps," 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 7918-7923, doi: 10.1109/IROS.2018.8594124.](https://doi.org/10.1109/IROS.2018.8594124)
+
+# Citation
+
+If you find this project useful, please cite us 🤗
+
+```
+@article{shirwatkar2023reducing,
+  title={Reducing Onboard Processing Time for Path Planning in Dynamically Evolving Polygonal Maps},
+  author={Shirwatkar, Aditya and Singh, Aman and Kiran, Jana Ravi},
+  journal={arXiv e-prints},
+  pages={arXiv--2305},
+  year={2023}
+}
+```
